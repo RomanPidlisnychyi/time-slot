@@ -11,64 +11,26 @@ import styles from './TimeSlotSelect.module.css';
 export default function TimeSlotSelect() {
   const dispatch = useDispatch();
 
-  const [selected, setSelected] = useState([]);
-
   const loading = useSelector(isLoading);
   const week = useSelector(getWeek);
-
-  console.log('week', week);
-
-  // useEffect(() => {
-  //   const onSelect = week && week.filter(({ hour }) => hour);
-  //   console.log('onSelect', onSelect);
-
-  //   setSelected(onSelect);
-  // }, []);
-
-  const handleSelect = e => {
-    const newSelections = [];
-
-    document.querySelectorAll('option').forEach(option => {
-      if (option.selected) {
-        newSelections.push({ id: option.value });
-      }
-    });
-
-    setSelected(newSelections);
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    const indexes = [];
+    const newWeek = [];
     document.querySelectorAll('option').forEach(option => {
-      if (option.selected) {
-        indexes.push(option.value);
-      }
+      newWeek.push({ id: +option.value, hour: option.selected });
     });
 
-    console.log('indexes', indexes);
-    // const { name, value } = e.target;
-
-    // dispatch(changeTimeSlot({ name, value }));
+    console.log(newWeek);
+    dispatch(changeTimeSlot(newWeek));
   };
 
-  console.log('selected', selected);
   return !loading && week ? (
     <form onSubmit={handleSubmit}>
-      <select
-        defaultValue={selected}
-        multiple
-        size={week.length}
-        onChange={handleSelect}
-      >
+      <select multiple size={week.length}>
         {week.map(({ hour, id }) => (
-          <option
-            className={styles.btn}
-            key={id}
-            value={id}
-            // onChange={handleSelect}
-          />
+          <option className={styles.btn} key={id} value={id} selected={hour} />
         ))}
       </select>
       <button type="submit">Save</button>
