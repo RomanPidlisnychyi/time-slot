@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import TimeSlotTableHead from './TimeSlotTableHead/TimeSlotTableHead';
 import TimeSlotTableBody from './TimeSlotTableBody/TimeSlotTableBody';
@@ -9,38 +10,67 @@ import styles from './TimeSlotSelect.module.css';
 
 export default function TimeSlotSelect() {
   const dispatch = useDispatch();
+
+  const [selected, setSelected] = useState([]);
+
   const loading = useSelector(isLoading);
   const week = useSelector(getWeek);
 
-  if (week) {
-    var days = Object.keys(week);
-  }
+  console.log('week', week);
 
-  const handlerChange = e => {
-    console.log('e', e);
+  // useEffect(() => {
+  //   const onSelect = week && week.filter(({ hour }) => hour);
+  //   console.log('onSelect', onSelect);
+
+  //   setSelected(onSelect);
+  // }, []);
+
+  const handleSelect = e => {
+    const newSelections = [];
+
+    document.querySelectorAll('option').forEach(option => {
+      if (option.selected) {
+        newSelections.push({ id: option.value });
+      }
+    });
+
+    setSelected(newSelections);
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    const indexes = [];
+    document.querySelectorAll('option').forEach(option => {
+      if (option.selected) {
+        indexes.push(option.value);
+      }
+    });
+
+    console.log('indexes', indexes);
     // const { name, value } = e.target;
 
     // dispatch(changeTimeSlot({ name, value }));
   };
+
+  console.log('selected', selected);
   return !loading && week ? (
-    <form>
-      {days.map(day => (
-        <select
-          key={day}
-          multiple
-          size={week[day].length}
-          onSelect={handlerChange}
-        >
-          {week[day].map((hour, index) => (
-            <option
-              className={hour ? `${styles.btn} ${styles.active}` : styles.btn}
-              key={index}
-              name={day}
-              value={index}
-            />
-          ))}
-        </select>
-      ))}
+    <form onSubmit={handleSubmit}>
+      <select
+        defaultValue={selected}
+        multiple
+        size={week.length}
+        onChange={handleSelect}
+      >
+        {week.map(({ hour, id }) => (
+          <option
+            className={styles.btn}
+            key={id}
+            value={id}
+            // onChange={handleSelect}
+          />
+        ))}
+      </select>
       <button type="submit">Save</button>
     </form>
   ) : (
