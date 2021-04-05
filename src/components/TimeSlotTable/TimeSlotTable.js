@@ -9,10 +9,9 @@ export default function TimeSlotTable() {
   const loading = useSelector(isLoading);
   const week = useSelector(getWeek);
 
-  const handle = e => {};
   return !loading && week ? (
     <form>
-      <table className={styles}>
+      <table>
         {/* <thead>
           <tr>
             <th>Day</th>

@@ -1,24 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeTimeSlot } from '../../../store/actions/timeSlotActions';
-// import { changeTimeSlotItem } from '../../../store/actions/timeSlotActions';
-// import TimeSlotTableBodyItem from './TimeSlotTableBodyItem/TimeSlotTableBodyItem';
 import styles from './TimeSlotTableBody.module.css';
 
 export default function TimeSlotTableBody({ week }) {
   const dispatch = useDispatch();
 
-  const [newWeek, setNewWeek] = useState(null);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isMouseMoving, setIsMouseMoving] = useState(false);
+  const [selected, setSelected] = useState(null);
   const [startX, setStartX] = useState(null);
   const [startY, setStartY] = useState(null);
-
-  useEffect(() => {
-    if (week && !newWeek) {
-      setNewWeek(week);
-    }
-  }, [week, newWeek]);
 
   const handleClick = e => {
     setStartX(e.clientX);
@@ -43,7 +35,7 @@ export default function TimeSlotTableBody({ week }) {
 
   const handleSingleClick = e => {
     const { id } = e.target;
-    const newWeek2 = newWeek.map(hour => {
+    const newWeek = week.map(hour => {
       if (hour.id === +id) {
         return { ...hour, hour: !hour.hour };
       }
@@ -51,7 +43,27 @@ export default function TimeSlotTableBody({ week }) {
       return hour;
     });
 
-    setNewWeek(newWeek2);
+    dispatch(changeTimeSlot(newWeek));
+  };
+
+  const handleSetSelected = () => {
+    const newWeek = week.map(hour => {
+      let isIdSelected = false;
+      selected.forEach(id => {
+        if (id === hour.id) {
+          isIdSelected = true;
+        }
+      });
+
+      if (isIdSelected) {
+        return { ...hour, hour: !hour.hour };
+      }
+
+      return hour;
+    });
+
+    dispatch(changeTimeSlot(newWeek));
+    setSelected(null);
   };
 
   const handleClickUp = e => {
@@ -59,6 +71,7 @@ export default function TimeSlotTableBody({ week }) {
     setStartX(null);
     setStartY(null);
     if (isMouseMoving) {
+      handleSetSelected();
       setIsMouseMoving(false);
       return;
     }
@@ -72,8 +85,8 @@ export default function TimeSlotTableBody({ week }) {
 
     setIsMouseMoving(true);
 
-    const newWeek2 = [];
-    document.querySelectorAll('td').forEach(td => {
+    const selectedId = [];
+    document.querySelectorAll('button[data-active]').forEach(td => {
       const position = td.getBoundingClientRect();
       const { top, left, right, bottom } = position;
       if (
@@ -86,32 +99,38 @@ export default function TimeSlotTableBody({ week }) {
           (startY >= bottom && top >= e.clientY) ||
           (startY <= bottom && top <= e.clientY))
       ) {
-        newWeek2.push({ id: +td.id, hour: true });
+        selectedId.push(+td.id);
         return;
       }
-
-      newWeek2.push({ id: +td.id, hour: false });
     });
 
-    setNewWeek(newWeek2);
+    const uniqueId = [...new Set(selectedId)];
+    setSelected(uniqueId);
   };
 
   return (
-    <tr
-      className={styles.tr}
-      onMouseDown={handleClickDown}
-      onMouseUp={handleClickUp}
-      onMouseMove={handleMouseMove}
-    >
-      {newWeek &&
-        newWeek.map(({ hour, id }) => (
-          <td
-            key={id}
-            id={id}
-            data-ative={hour}
-            className={hour ? `${styles.btn} ${styles.active}` : styles.btn}
-          />
-        ))}
+    <tr className={styles.tr} onMouseMove={handleMouseMove}>
+      {week &&
+        week.map(({ hour, id }) => {
+          const isActive =
+            selected && selected.find(selectedId => selectedId === id);
+          return (
+            <td className={styles.td} key={id}>
+              <button
+                id={id}
+                data-active={hour}
+                className={
+                  (hour && !isActive) || (!hour && isActive)
+                    ? `${styles.btn} ${styles.active}`
+                    : styles.btn
+                }
+                type="button"
+                onMouseDown={handleClickDown}
+                onMouseUp={handleClickUp}
+              />
+            </td>
+          );
+        })}
     </tr>
   );
 }
