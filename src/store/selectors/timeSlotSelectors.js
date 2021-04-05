@@ -1,4 +1,8 @@
-// export const getWeek = state =>
-//   state.week ? state.week.map((hour, index) => ({ id: index, hour })) : null;
+import { createSelector } from '@reduxjs/toolkit';
 
 export const getWeek = state => state.week;
+export const getItemById = createSelector(
+  getWeek,
+  (state, id) => id,
+  (hours, id) => hours.find(hour => hour.id === id)
+);

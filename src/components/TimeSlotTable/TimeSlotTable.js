@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import TimeSlotTableHead from './TimeSlotTableHead/TimeSlotTableHead';
+// import TimeSlotTableHead from './TimeSlotTableHead/TimeSlotTableHead';
 import TimeSlotTableBody from './TimeSlotTableBody/TimeSlotTableBody';
 import { getWeek } from '../../store/selectors/timeSlotSelectors';
 import { isLoading } from '../../store/selectors/loadingSelectors';
@@ -9,19 +9,17 @@ export default function TimeSlotTable() {
   const loading = useSelector(isLoading);
   const week = useSelector(getWeek);
 
-  const handle = e => {
-    console.log('e', e);
-  };
+  const handle = e => {};
   return !loading && week ? (
     <form>
       <table className={styles}>
-        <thead>
+        {/* <thead>
           <tr>
             <th>Day</th>
             <TimeSlotTableHead week={week} />
           </tr>
-        </thead>
-        <tbody onClickCapture={handle}>
+        </thead> */}
+        <tbody>
           <TimeSlotTableBody week={week} />
         </tbody>
       </table>

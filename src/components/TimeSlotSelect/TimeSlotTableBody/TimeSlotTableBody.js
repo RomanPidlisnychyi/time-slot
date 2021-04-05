@@ -8,23 +8,20 @@ export default function TimeSlotTableBody({ week }) {
   const handlerChange = e => {
     const { name, value } = e.target;
 
-    dispatch(changeTimeSlot({ name, value }));
+    // dispatch(changeTimeSlot({ name, value }));
   };
-  const days = Object.keys(week);
-  return days.map(day => (
-    <tr key={day}>
-      <td>{day}</td>
-      {week[day].map((hour, index) => (
-        <td key={index}>
+  return (
+    <tr>
+      {week.map(({ hour, id }) => (
+        <td key={id}>
           <button
             className={hour ? `${styles.btn} ${styles.active}` : styles.btn}
-            name={day}
-            value={index}
+            value={id}
             type="button"
             onClick={handlerChange}
           />
         </td>
       ))}
     </tr>
-  ));
+  );
 }

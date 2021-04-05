@@ -27,8 +27,8 @@ export default function TimeSlotSelect() {
   };
 
   return !loading && week ? (
-    <form onSubmit={handleSubmit}>
-      <select multiple size={week.length}>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <select inputmode multiple size={week.length}>
         {week.map(({ hour, id }) => (
           <option className={styles.btn} key={id} value={id} selected={hour} />
         ))}

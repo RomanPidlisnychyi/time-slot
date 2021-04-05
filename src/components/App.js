@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { onGetTimeSlot } from '../store/operations/timeSlotOperations';
-// import TimeSlotTable from './TimeSlotTable/TimeSlotTable';
-import TimeSlotSelect from './TimeSlotSelect/TimeSlotSelect';
+import TimeSlotTable from './TimeSlotTable/TimeSlotTable';
+// import TimeSlotSelect from './TimeSlotSelect/TimeSlotSelect';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -12,7 +12,8 @@ export default function App() {
   }, [dispatch]);
   return (
     <div>
-      <TimeSlotSelect />
+      {/* <TimeSlotSelect /> */}
+      <TimeSlotTable />
     </div>
   );
 }

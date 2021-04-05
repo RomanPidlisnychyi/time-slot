@@ -1,3 +1,13 @@
+.tr {
+  display: flex;
+  flex-wrap: wrap;
+  width: 300px;
+}
+
+td {
+  padding: 0;
+}
+
 .btn {
   border: none;
   outline: none;
