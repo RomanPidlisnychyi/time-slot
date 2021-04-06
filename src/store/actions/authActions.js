@@ -8,6 +8,8 @@ export const loginRequest = createAction('LOGIN_REQUEST');
 export const loginSuccess = createAction('LOGIN_SUCCESS');
 export const loginError = createAction('LOGIN_ERROR');
 
+export const logoutSuccess = createAction('LOGOUT_SUCCESS');
+
 export const currentRequest = createAction('CURRENT_REQUEST');
 export const currentSuccess = createAction('CURRENT_SUCCESS');
 export const currentError = createAction('CURRENT_ERROR');
