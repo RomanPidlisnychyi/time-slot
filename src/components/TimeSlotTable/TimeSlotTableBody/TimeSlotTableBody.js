@@ -13,11 +13,20 @@ export default function TimeSlotTableBody() {
   const [selected, setSelected] = useState(null);
   const [startX, setStartX] = useState(null);
   const [startY, setStartY] = useState(null);
+  const [isActivated, setIsActivated] = useState(false);
 
   const handleClick = e => {
+    const { dataset } = e.target;
+    if (dataset) {
+      const isElementActive = dataset.active === 'false' ? false : true;
+      setIsActivated(!isElementActive);
+    }
+
     setStartX(e.clientX);
     setStartY(e.clientY);
   };
+
+  console.log(isActivated);
 
   const handleClickDown = e => {
     handleClick(e);
@@ -47,7 +56,7 @@ export default function TimeSlotTableBody() {
       });
 
       if (isIdSelected) {
-        return { ...hour, hour: !hour.hour };
+        return { ...hour, hour: isActivated };
       }
 
       return hour;
@@ -111,7 +120,9 @@ export default function TimeSlotTableBody() {
                 id={id}
                 data-active={hour}
                 className={
-                  (hour && !isActive) || (!hour && isActive)
+                  (hour && !isActive) ||
+                  (hour && isActive && isActivated) ||
+                  (!hour && isActive)
                     ? `${styles.btn} ${styles.active}`
                     : styles.btn
                 }
