@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.name {
+  border-right: 1px solid grey;
+  padding-right: 10px;
+  margin-right: 10px;
+}

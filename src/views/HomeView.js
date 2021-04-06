@@ -1,5 +1,5 @@
-import TimeSlotForm from '../components/TimeSlotForm/TimeSlotForm';
+import Home from '../components/Home/Home';
 
 export default function HomeView() {
-  return <TimeSlotForm />;
+  return <Home />;
 }

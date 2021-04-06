@@ -1,0 +1,9 @@
+.message {
+  position: absolute;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  left: 55%;
+  top: 12px;
+  background-color: grey;
+}

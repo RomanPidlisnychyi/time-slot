@@ -1,10 +1,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   registerSuccess,
+  registerError,
+  registerMessage,
   loginSuccess,
+  loginError,
   logoutSuccess,
   currentSuccess,
   currentError,
+  cleanMessage,
 } from '../actions/authActions';
 
 const initialState = {
@@ -18,4 +22,12 @@ export const user = createReducer(initialState, {
   [currentSuccess]: (_, { payload }) => payload,
   [currentError]: () => initialState,
   [logoutSuccess]: () => initialState,
+});
+
+export const message = createReducer(null, {
+  [registerError]: (_, { payload }) => payload,
+  [loginError]: (_, { payload }) => payload,
+  [currentError]: (_, { payload }) => payload,
+  [registerMessage]: (_, { payload }) => payload,
+  [cleanMessage]: () => null,
 });

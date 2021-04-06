@@ -1,13 +1,12 @@
 import { Route, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { getToken } from '../../store/selectors/authSelectors';
+import { token } from '../../utils/apiUtils';
 
 export default function PublicRoute({
   component: Component,
   restricted,
   ...rest
 }) {
-  const isAuthenticated = useSelector(getToken);
+  const isAuthenticated = token.getLocalToken();
   return (
     <Route
       {...rest}

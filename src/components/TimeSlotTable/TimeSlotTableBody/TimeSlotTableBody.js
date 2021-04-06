@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTimeSlot } from '../../../store/actions/timeSlotActions';
-import { getWeek } from '../../../store/selectors/timeSlotSelectors';
+import { getSlots } from '../../../store/selectors/timeSlotSelectors';
 import styles from './TimeSlotTableBody.module.css';
 
 export default function TimeSlotTableBody() {
   const dispatch = useDispatch();
 
-  const week = useSelector(getWeek);
+  const week = useSelector(getSlots);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isMouseMoving, setIsMouseMoving] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -25,8 +25,6 @@ export default function TimeSlotTableBody() {
     setStartX(e.clientX);
     setStartY(e.clientY);
   };
-
-  console.log(isActivated);
 
   const handleClickDown = e => {
     handleClick(e);
@@ -122,7 +120,7 @@ export default function TimeSlotTableBody() {
                 className={
                   (hour && !isActive) ||
                   (hour && isActive && isActivated) ||
-                  (!hour && isActive)
+                  (!hour && isActive && isActivated)
                     ? `${styles.btn} ${styles.active}`
                     : styles.btn
                 }

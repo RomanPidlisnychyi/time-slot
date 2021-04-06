@@ -2,15 +2,37 @@ import {
   getTimeSlotRequest,
   getTimeSlotSuccess,
   getTimeSlotError,
+  updateTimeSlotSuccess,
+  updateTimeSlotError,
+  updateTimeSlotRequest,
 } from '../actions/timeSlotActions';
-import { getTimeSlot } from '../../utils/apiUtils';
+import { registerMessage } from '../actions/authActions';
+import { onCleanMessage } from '../operations/authOperations';
+import { getTimeSlot, updateTimeSlot } from '../../utils/apiUtils';
 
 export const onGetTimeSlot = () => async dispatch => {
   dispatch(getTimeSlotRequest());
 
   const payload = await getTimeSlot();
+  if (payload && payload.status < 400) {
+    dispatch(getTimeSlotSuccess(payload.data));
+    return;
+  }
 
-  dispatch(getTimeSlotSuccess(payload));
+  dispatch(getTimeSlotError(payload));
+};
 
-  // dispatch(getTimeSlotError());
+export const onUpdateTimeSlot = slots => async dispatch => {
+  dispatch(updateTimeSlotRequest());
+
+  const payload = await updateTimeSlot({ slots });
+  if (payload && payload.status < 400) {
+    dispatch(updateTimeSlotSuccess());
+    dispatch(registerMessage('Timeslot successfully updated!'));
+    dispatch(onCleanMessage());
+    return;
+  }
+
+  dispatch(updateTimeSlotError(payload));
+  dispatch(onCleanMessage());
 };
