@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { onGetTimeSlot } from '../store/operations/timeSlotOperations';
-import TimeSlotTable from './TimeSlotTable/TimeSlotTable';
+import TimeSlotForm from './TimeSlotForm/TimeSlotForm';
 
 export default function App() {
   const dispatch = useDispatch();
@@ -9,9 +9,5 @@ export default function App() {
   useEffect(() => {
     dispatch(onGetTimeSlot());
   }, [dispatch]);
-  return (
-    <div>
-      <TimeSlotTable />
-    </div>
-  );
+  return <TimeSlotForm />;
 }

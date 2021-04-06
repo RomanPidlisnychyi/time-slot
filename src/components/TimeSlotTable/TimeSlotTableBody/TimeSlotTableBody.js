@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { changeTimeSlot } from '../../../store/actions/timeSlotActions';
+import { getWeek } from '../../../store/selectors/timeSlotSelectors';
 import styles from './TimeSlotTableBody.module.css';
 
-export default function TimeSlotTableBody({ week }) {
+export default function TimeSlotTableBody() {
   const dispatch = useDispatch();
 
+  const week = useSelector(getWeek);
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [isMouseMoving, setIsMouseMoving] = useState(false);
   const [selected, setSelected] = useState(null);
@@ -15,17 +17,6 @@ export default function TimeSlotTableBody({ week }) {
   const handleClick = e => {
     setStartX(e.clientX);
     setStartY(e.clientY);
-  };
-
-  const handleSubmit = e => {
-    e.preventDefault();
-
-    const newWeek = [];
-    document.querySelectorAll('option').forEach(option => {
-      newWeek.push({ id: +option.value, hour: option.selected });
-    });
-
-    dispatch(changeTimeSlot(newWeek));
   };
 
   const handleClickDown = e => {
